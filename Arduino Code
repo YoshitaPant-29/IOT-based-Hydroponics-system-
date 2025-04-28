@@ -1,0 +1,40 @@
+#define PH_SENSOR_PIN A0     // pH sensor is connected to analog pin A0
+#define TDS_SENSOR_PIN A1    // TDS (Total Dissolved Solids) sensor is connected to analog pin A1
+#define RELAY1_PIN 2         // Relay 1 is connected to digital pin 2
+#define RELAY2_PIN 3         // Relay 2 is connected to digital pin 3
+#define PH_THRESHOLD 7.0     // Target pH value (threshold)
+
+void setup() {
+    Serial.begin(9600); // Start serial monitor communication at 9600 baud rate
+    pinMode(RELAY1_PIN, OUTPUT);
+    pinMode(RELAY2_PIN, OUTPUT);
+}
+void loop() {
+    float pHValue = getPH(); // Read the pH sensor
+    float tdsValue = getTDS(); // Read the TDS (EC) sensor
+
+    Serial.print("pH Value: ");
+    Serial.println(pHValue);
+    Serial.print("TDS Value: ");
+    Serial.println(tdsValue);
+    if (pHValue < PH_THRESHOLD) {
+        digitalWrite(RELAY1_PIN, HIGH); // Turn ON relay 1
+        digitalWrite(RELAY2_PIN, LOW);  // Turn OFF relay 2
+    } else {
+        digitalWrite(RELAY1_PIN, LOW);  // Turn OFF relay 1
+        digitalWrite(RELAY2_PIN, HIGH); // Turn ON relay 2
+    }
+    delay(1000); // Wait for 1 second before repeating
+}
+float getPH() {
+    int sensorValue = analogRead(PH_SENSOR_PIN); // Read analog value from pH sensor
+    float voltage = sensorValue * (5.0 / 1024.0); // Convert to voltage (5V system)
+    }
+float getTDS() {
+    int sensorValue = analogRead(TDS_SENSOR_PIN); // Read TDS sensor
+    float voltage = sensorValue * (5.0 / 1024.0); // Convert to voltage
+  }
+
+
+
+
